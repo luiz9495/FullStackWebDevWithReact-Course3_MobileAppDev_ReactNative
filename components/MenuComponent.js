@@ -37,7 +37,7 @@ class Menu extends Component {
           data={this.state.dishes}
           renderItem={renderMenuItem}
           keyExtractor={item => item.id.toString()}
-          />
+      />
     );
   }
 }

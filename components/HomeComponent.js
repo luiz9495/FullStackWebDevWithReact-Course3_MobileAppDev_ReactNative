@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
 import { PROMOTIONS } from '../shared/promotions';
@@ -34,19 +34,19 @@ class Home extends Component {
       };
   }
 
-    static navigationOptions = {
-        title: 'Home'
-    };
+  static navigationOptions = {
+      title: 'Home'
+  };
 
-    render() {
-        return(
-            <ScrollView>
-              <RenderItem item = {this.state.dishes.filter(dish => dish.featured)[0]} />
-              <RenderItem item = {this.state.promotions.filter(promo => promo.featured)[0]} />
-              <RenderItem item = {this.state.leaders.filter(leader => leader.featured)[0]} />
-            </ScrollView>
-        );
-    }
+  render() {
+      return(
+          <ScrollView>
+            <RenderItem item = {this.state.dishes.filter(dish => dish.featured)[0]} />
+            <RenderItem item = {this.state.promotions.filter(promo => promo.featured)[0]} />
+            <RenderItem item = {this.state.leaders.filter(leader => leader.featured)[0]} />
+          </ScrollView>
+      );
+  }
 }
 
 export default Home;
