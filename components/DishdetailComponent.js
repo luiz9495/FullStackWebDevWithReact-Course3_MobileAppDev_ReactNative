@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, StyleSheet, Modal } from 'react-native';
+import { Text, View, ScrollView, FlatList, StyleSheet, Modal, Alert, PanResponder } from 'react-native';
 import { Card, Icon, Button, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -22,9 +22,43 @@ const mapDispatchToProps = dispatch => ({
 function RenderDish(props) {
   const dish = props.dish;
 
+  const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
+    if (dx < -200)
+      return true;
+    else
+      return false;
+  };
+
+  const panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gestureState) => {
+        return true;
+      },
+      onPanResponderEnd: (e, gestureState) => {
+        console.log("pan responder end", gestureState);
+        if (recognizeDrag(gestureState))
+          Alert.alert(
+            'Add to Favorites?',
+            'Are you sure you wish to add ' + dish.name + ' to favorites ?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+              },
+              {
+                text: 'OK',
+                onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}
+              }
+            ],
+            { cancelable: false}
+          );
+        return true;
+      }
+  });
+
   if (dish != null) {
       return(
-        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000} {...panResponder.panHandlers}>
           <Card
           featuredTitle={dish.name}
           image={{uri: baseUrl + dish.image}}>
@@ -180,7 +214,7 @@ class Dishdetail extends Component {
              <Input
                 name='author'
                 placeholder=' Author'
-                leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
 //                onChangeText={this.handleChange}
                 onChangeText={ (text) => this.setState({author: text})}
                 value={this.state.author}
@@ -188,7 +222,7 @@ class Dishdetail extends Component {
               <Input
                 name='comment'
                 placeholder=' Comment'
-                leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
+                leftIcon={{ type: 'font-awesome', name: 'comment-o', marginRight: 10}}
                 onChangeText={ (text) => this.setState({comment: text})}
                 value={this.state.comment}
 //                 onChangeText={(value) => this.setState({comment: value})}
