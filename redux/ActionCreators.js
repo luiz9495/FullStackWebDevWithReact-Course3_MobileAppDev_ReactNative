@@ -153,6 +153,11 @@ export const addFavorite = (dishId) => ({
     payload: dishId
 });
 
+export const deleteFavorite = (dishId) => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: dishId
+});
+
 export const postComment = (commentId, dishId, rating, author, comment)  => (dispatch) => {
   const newComment = {
       id: commentId,
