@@ -80,7 +80,7 @@ class Reservation extends Component {
 //        console.log("!!! fpresentLocalNotification");
         Notifications.presentLocalNotificationAsync({
             title: 'Your Reservation',
-            body: 'Reservation for '+ date + ' requested',
+            body: 'Reservation for requested',
             ios: {
                 sound: true
             },
@@ -90,6 +90,13 @@ class Reservation extends Component {
                 color: '#512DA8'
             }
         });
+    }
+
+    async componentDidMount() {
+      let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      if (result.status === 'granted') {
+        console.log('Notification permissions granted.')
+      }
     }
 
     render() {
