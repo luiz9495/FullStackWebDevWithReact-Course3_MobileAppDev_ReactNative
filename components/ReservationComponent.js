@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
-import { Card } from 'react-native-elements';
-import DatePicker from 'react-native-datepicker'
+import { Text, View, ScrollView, StyleSheet, Picker, Switch,  Modal, Alert } from 'react-native';
+import { Button, Card } from 'react-native-elements';
+import DatePicker from 'react-native-datepicker';
+import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
 
@@ -25,8 +26,25 @@ class Reservation extends Component {
     }
 
     handleReservation() {
-        console.log(JSON.stringify(this.state));
-        this.toggleModal();
+      console.log(JSON.stringify(this.state));
+//        this.toggleModal();
+      Alert.alert(
+        'Your Reservation OK?',
+        'Number of Guests: ' + this.state.guests + '\n' + 'Smoking? ' + this.state.smoking + '\n' +
+        'Date and Time: ' + this.state.date,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => this.resetForm(),
+            style: 'cancel'
+          },
+          {
+            text: 'OK',
+            onPress: () => this.resetForm()
+          }
+        ],
+        { cancelable: false }
+      );
     }
 
     resetForm() {
@@ -41,6 +59,7 @@ class Reservation extends Component {
     render() {
         return(
             <ScrollView>
+              <Animatable.View animation="zoomIn" duration={2000}>
                 <View style={styles.formRow}>
                 <Text style={styles.formLabel}>Number of Guests</Text>
                 <Picker
@@ -94,7 +113,7 @@ class Reservation extends Component {
                 <Button
                     onPress={() => this.handleReservation()}
                     title="Reserve"
-                    color="#512DA8"
+                    buttonStyle={{backgroundColor: "#512DA8"}}
                     accessibilityLabel="Learn more about this purple button"
                     />
                 </View>
@@ -126,6 +145,7 @@ class Reservation extends Component {
                          />
                   </View>
                 </Modal>
+              </Animatable.View>
             </ScrollView>
         );
     }
