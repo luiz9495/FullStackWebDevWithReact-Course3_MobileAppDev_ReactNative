@@ -230,7 +230,8 @@ class Dishdetail extends Component {
              <Input
                 name='author'
                 placeholder=' Author'
-                leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
+                leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10, marginTop: 20 }}
+                marginTop={20}
 //                onChangeText={this.handleChange}
                 onChangeText={ (text) => this.setState({author: text})}
                 value={this.state.author}
@@ -245,8 +246,9 @@ class Dishdetail extends Component {
                />
 
              <Button
-                buttonStyle={styles.submitButton}
+                buttonStyle={{ backgroundColor: '#512DA8', marginTop: 30 }}
                 title="SUBMIT"
+                titleStyle={{ fontWeight: "bold" }}
                 onPress = {() => {
                   this.handleComment(dishId);
                   this.resetForm();
@@ -255,8 +257,9 @@ class Dishdetail extends Component {
                 }
               />
              <Button
-                  buttonStyle={styles.cancelButton}
+                  buttonStyle={{ backgroundColor: '#808080', marginTop: 20 }}
                   title="CANCEL"
+                  titleStyle={{ fontWeight: "bold" }}
                   onPress = {() => this.toggleModal() }
                  />
           </View>
@@ -290,14 +293,6 @@ const styles = StyleSheet.create({
   modalText: {
       fontSize: 18,
       margin: 10
-  },
-  submitButton:{
-    backgroundColor: '#512DA8',
-    margin: 20
-  },
-  cancelButton:{
-    backgroundColor: '#808080',
-    margin: 20
   }
 });
 

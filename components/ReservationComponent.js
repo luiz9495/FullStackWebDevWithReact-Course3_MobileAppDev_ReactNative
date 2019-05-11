@@ -113,6 +113,8 @@ class Reservation extends Component {
                 <Button
                     onPress={() => this.handleReservation()}
                     title="Reserve"
+                    titleStyle={{ fontWeight: "bold" }} 
+                    containerStyle={{flex: 1}}
                     buttonStyle={{backgroundColor: "#512DA8"}}
                     accessibilityLabel="Learn more about this purple button"
                     />
