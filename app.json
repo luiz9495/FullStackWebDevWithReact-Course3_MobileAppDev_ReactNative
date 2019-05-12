@@ -23,7 +23,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "net.food.confusion.confusion",
       "supportsTablet": true
-    }
+    },
+    "android": {
+      "package": "net.food.confusion.confusion"
+    },
+    "description": "",
+    "githubUrl": "https://github.com/luiz9495/FullStackWebDevWithReact-Course3_MobileAppDev_ReactNative"
   }
 }

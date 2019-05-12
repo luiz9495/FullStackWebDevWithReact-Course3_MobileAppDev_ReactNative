@@ -3,7 +3,7 @@ import { Text, View, ScrollView, StyleSheet, Picker, Switch,  Modal, Alert } fro
 import { Button, Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
+import { Permissions, Notifications, Calendar } from 'expo';
 
 class Reservation extends Component {
 
@@ -46,6 +46,7 @@ class Reservation extends Component {
             text: 'OK',
             onPress: () => {
               this.presentLocalNotification(this.state.date);
+              this.addReservationToCalendar(this.state.date);
               this.resetForm();
             }
           }
@@ -63,33 +64,58 @@ class Reservation extends Component {
       });
     }
 
+    async obtainCalendarPermission() {
+      let permission = await Permissions.getAsync(Permissions.CALENDAR);
+      if (permission.status !== 'granted') {
+          permission = await Permissions.askAsync(Permissions.CALENDAR);
+          if (permission.status !== 'granted') {
+              Alert.alert('Permission not granted to access calendar');
+          }
+      }
+      return permission;
+    }
+
+    async addReservationToCalendar(date) {
+      await this.obtainCalendarPermission();
+      Calendar.createEventAsync(Calendar.DEFAULT, {
+          title: 'Con Fusion Table Reservation',
+          startDate: new Date(Date.parse(date)),
+          endDate: new Date(Date.parse(date) + 2*3600*1000),
+          timeZone: 'Asia/Hong_Kong',
+          location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+      })
+      .then(() => {
+        console.log("Successfully created event");
+        Alert.alert('Reservation has been added to your calendar');
+      })
+      .catch(err => console.log("Can not create event", err));
+    }
+
     async obtainNotificationPermission() {
-        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
-        if (permission.status !== 'granted') {
-            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
-            if (permission.status !== 'granted') {
-                Alert.alert('Permission not granted to show notifications');
-            }
-        }
-//        console.log("!!! fobtainNotificationPermission");
-        return permission;
+      let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+      if (permission.status !== 'granted') {
+          permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+          if (permission.status !== 'granted') {
+              Alert.alert('Permission not granted to show notifications');
+          }
+      }
+      return permission;
     }
 
     async presentLocalNotification(date) {
-        await this.obtainNotificationPermission();
-//        console.log("!!! fpresentLocalNotification");
-        Notifications.presentLocalNotificationAsync({
-            title: 'Your Reservation',
-            body: 'Reservation for ' + date + ' requested',
-            ios: {
-                sound: true
-            },
-            android: {
-                sound: true,
-                vibrate: true,
-                color: '#512DA8'
-            }
-        });
+      await this.obtainNotificationPermission();
+      Notifications.presentLocalNotificationAsync({
+          title: 'Your Reservation',
+          body: 'Reservation for ' + date + ' requested',
+          ios: {
+              sound: true
+          },
+          android: {
+              sound: true,
+              vibrate: true,
+              color: '#512DA8'
+          }
+      });
     }
 
     async componentDidMount() {
