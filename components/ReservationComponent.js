@@ -80,7 +80,7 @@ class Reservation extends Component {
 //        console.log("!!! fpresentLocalNotification");
         Notifications.presentLocalNotificationAsync({
             title: 'Your Reservation',
-            body: 'Reservation for requested',
+            body: 'Reservation for ' + date + ' requested',
             ios: {
                 sound: true
             },
