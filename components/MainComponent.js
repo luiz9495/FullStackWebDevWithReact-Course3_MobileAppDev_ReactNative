@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const LoginNavigator = createStackNavigator({
-    Login: { screen: Login }
+    Login: Login
   }, {
   navigationOptions: ({ navigation }) => ({
     headerStyle: {
